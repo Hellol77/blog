@@ -7,9 +7,10 @@ export default function RecentPosts() {
       <h1 className=" mb-6 text-2xl font-semibold">최근 게시물</h1>
       {allBlogs
         .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))
+        .slice(0, 5)
         .map((blog) => (
           <Link
-            className="flex flex-1 flex-col gap-1 rounded-lg py-4 hover:bg-gray hover:bg-opacity-5"
+            className=" hover:bg-hoverSubText  flex flex-1 flex-col gap-1 rounded-lg py-4 "
             href={`/blog/${blog.slug}`}
             key={blog.slug}
           >
@@ -17,7 +18,7 @@ export default function RecentPosts() {
               {blog.title}
             </span>
             <span className=" font-light">{blog.description}</span>
-            <time className="text-xs font-light text-gray">{blog.date}</time>
+            <time className="text-subText text-xs font-light">{blog.date}</time>
           </Link>
         ))}
     </>

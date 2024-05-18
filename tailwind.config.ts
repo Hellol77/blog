@@ -11,9 +11,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        gray: "#676b74",
-        black: "#101827",
-        background: "#f9fafb",
+        subText: "var(--subText)",
+        textBasic: "var(--textBasic)",
+        background: "var(--background)",
+        hoverSubText: "rgba(var(--hover--subText))",
       },
     },
   },

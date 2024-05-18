@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --subText: #676b74;
+
+    --textBasic: #101827;
+
+    --background: #f9fafb;
+
+    --hover--subText: 103, 107, 116, 0.08;
+  }
+
+  .dark {
+    --subText: #676b74;
+
+    --textBasic: #f9fafb;
+
+    --background: #21252a;
+  }
+}

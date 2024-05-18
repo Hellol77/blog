@@ -1,13 +1,7 @@
 "use client";
-import {
-  Link,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenuToggle,
-} from "@nextui-org/react";
-import { useState } from "react";
+import { Button } from "@nextui-org/react";
+import { useTheme } from "next-themes";
+import Link from "next/link";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -17,18 +11,25 @@ const navigation = [
 ];
 
 export default function Nav() {
+  const { setTheme, theme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
   return (
-    <ul className="hidden justify-center gap-4 sm:flex">
+    <ul className="hidden items-center justify-center gap-4 sm:flex">
       {navigation.map((nav) => (
         <li key={nav.label}>
           <Link
-            className="text-gray duration-2000 font-light transition hover:text-black"
+            className="duration-2000 hover:text-textBasic text-subText font-light transition"
             href={nav.href}
           >
             {nav.label}
           </Link>
         </li>
       ))}
+      <Button onClick={toggleTheme}>change</Button>
     </ul>
   );
 }
