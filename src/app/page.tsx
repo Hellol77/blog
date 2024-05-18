@@ -1,3 +1,10 @@
+import PageLayout from "@/components/PageLayout";
+import RecentPosts from "@/components/RecentPosts";
+
 export default function Home() {
-  return <div></div>;
+  return (
+    <PageLayout>
+      <RecentPosts />
+    </PageLayout>
+  );
 }
