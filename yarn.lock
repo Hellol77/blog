@@ -1677,7 +1677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nextui-org/system@npm:2.1.2":
+"@nextui-org/system@npm:2.1.2, @nextui-org/system@npm:^2.1.2":
   version: 2.1.2
   resolution: "@nextui-org/system@npm:2.1.2"
   dependencies:
@@ -1750,7 +1750,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nextui-org/theme@npm:2.2.3":
+"@nextui-org/theme@npm:2.2.3, @nextui-org/theme@npm:^2.2.3":
   version: 2.2.3
   resolution: "@nextui-org/theme@npm:2.2.3"
   dependencies:
@@ -4240,6 +4240,8 @@ __metadata:
   resolution: "blog@workspace:."
   dependencies:
     "@nextui-org/react": "npm:^2.3.6"
+    "@nextui-org/system": "npm:^2.1.2"
+    "@nextui-org/theme": "npm:^2.2.3"
     "@tailwindcss/typography": "npm:^0.5.13"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
