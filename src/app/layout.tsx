@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-import Providers from "@/app/providers";
 import { Pretendard } from "@/styles/fonts/font";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/styles/ThemeProvider";
-export const metadata: Metadata = {
-  title: "Hellol's Blog",
-  description: "헬롤의 블로그입니다. 여러 주제에 대해 다룹니다.",
-};
+import { NextUIProvider } from "@nextui-org/react";
 
 export default function RootLayout({
   children,
@@ -21,7 +17,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="mx-auto min-w-[320px] max-w-screen-md bg-background">
-        <Providers>
+        <NextUIProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="light"
@@ -33,8 +29,16 @@ export default function RootLayout({
               {children}
             </main>
           </ThemeProvider>
-        </Providers>
+        </NextUIProvider>
       </body>
     </html>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Hellol's Blog",
+  description: "헬롤의 블로그입니다. 여러 주제에 대해 다룹니다.",
+  icons: {
+    icon: "favicon.ico",
+  },
+};
