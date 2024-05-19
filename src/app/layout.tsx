@@ -15,12 +15,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${Pretendard.className} bg-background`}>
+    <html
+      lang="ko"
+      className={`${Pretendard.className} bg-background`}
+      suppressHydrationWarning
+    >
       <body className="mx-auto min-w-[320px] max-w-screen-md bg-background">
         <Providers>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >

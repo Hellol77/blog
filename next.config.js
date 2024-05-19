@@ -1,10 +1,6 @@
 const { withContentlayer } = require("next-contentlayer");
 
 /** @type {import('next').NextConfig} */
-const options = {
-  reactStrictMode: true,
-  swcMinify: false,
-  // 옵션은 자유롭게 넣어주세요.
-};
+const nextConfig = { reactStrictMode: true, swcMinify: true };
 
-module.exports = withContentlayer(options);
+module.exports = withContentlayer(nextConfig);

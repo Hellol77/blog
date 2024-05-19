@@ -18,6 +18,52 @@
 
     --textBasic: #f9fafb;
 
-    --background: #21252a;
+    --background: #1a1d21;
   }
+}
+
+/* @layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+} */
+
+.prose {
+  max-width: none;
+}
+
+.prose-slate {
+  @apply text-slate-800 dark:text-slate-200;
+}
+
+.rehype-code-title {
+  @apply text-slate-900 dark:text-slate-200;
+  @apply bg-white dark:bg-zinc-900;
+  @apply border border-solid border-sky-800 dark:border-sky-100;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  padding: 5px 16px;
+  font-weight: 700;
+  margin-top: 8px;
+  font-size: 14px;
+  margin-bottom: -35px;
+}
+
+.prose span code {
+  background-color: var(--background) !important;
+  color: var(--textBasic) !important;
+}
+
+.prose figure :where(code):not(:where([class~="not-prose"] *)),
+.prose figure :where(code):not(:where([class~="not-prose"] *)) {
+  color: var(--background);
+  font-weight: 400;
+}
+
+.prose figure :where(code):not(:where([class~="not-prose"] *))::before,
+.prose figure :where(code):not(:where([class~="not-prose"] *))::after {
+  content: "";
 }
