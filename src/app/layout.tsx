@@ -4,6 +4,7 @@ import { Pretendard } from "@/styles/fonts/font";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/styles/ThemeProvider";
 import { NextUIProvider } from "@nextui-org/react";
+import GoogleAnalytics from "@/components/googleAnalytics";
 
 export default function RootLayout({
   children,
@@ -30,6 +31,7 @@ export default function RootLayout({
             </main>
           </ThemeProvider>
         </NextUIProvider>
+        <GoogleAnalytics />
       </body>
     </html>
   );
