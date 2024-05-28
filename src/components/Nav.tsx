@@ -7,7 +7,6 @@ const navigation = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Blog", href: "/blog" },
-  { label: "Resume", href: "/resume" },
 ];
 
 export default function Nav() {
