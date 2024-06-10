@@ -14,10 +14,10 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${Pretendard.className} bg-background`}
+      className={`${Pretendard.className} relative bg-background`}
       suppressHydrationWarning
     >
-      <body className="mx-auto min-w-[320px] max-w-screen-md bg-background">
+      <body className="  mx-auto min-w-[320px] max-w-screen-md bg-background ">
         <NextUIProvider>
           <ThemeProvider
             attribute="class"

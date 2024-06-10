@@ -15,6 +15,8 @@ const config: Config = {
         textBasic: "var(--textBasic)",
         background: "var(--background)",
         hoverSubText: "rgba(var(--hover--subText))",
+        navBackground: "var(--nav--background)",
+        navBackdrop: "hsl(var(--nav--backdrop))",
       },
     },
   },

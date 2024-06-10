@@ -10,6 +10,10 @@
 
     --background: #f9fafb;
 
+    --nav--background: #dedfe2;
+
+    --nav--backdrop: 0 0% 100%;
+
     --hover--subText: 103, 107, 116, 0.08;
   }
 
@@ -19,6 +23,10 @@
     --textBasic: #f9fafb;
 
     --background: #1a1d21;
+
+    --nav--background: #2d3035;
+
+    --nav--backdrop: 214 12% 12%
   }
 }
 
