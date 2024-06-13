@@ -1,0 +1,354 @@
+---
+title: "제어 컴포넌트와 비제어 컴포넌트 사용하기 (feat: React-Hook-Form)"
+date: 2024-04-03
+description: 제어 컴포넌트와 비제어 컴포넌트는 언제 사용해야 할까요?
+thumbnailUrl: /posts/thumbnail/dog.jpeg
+tags: ["제어 컴포넌트", "비제어 컴포넌트", "React-Hook-Form"]
+---
+
+# 제어 컴포넌트와 비제어 컴포넌트 사용하기
+
+## 출발점
+
+Reack hook form은 form 을 만들때 쓰는 대표적인 라이브러리 입니다.
+
+form 구조 떄문에 어쩔 수 없는 많은 state로 부터 우리를 지켜주는 존재입니다.
+
+또한 그에 따른 리렌더링 문제로 부터 자유롭게 해줍니다.
+
+Reack hook form는 대표적으로 비제어 컴포넌트를 사용하긴 하지만 제어 컴포넌트로도 form을 만들 수 있게 하는데요
+
+오늘 만들어보는 form은 react hook form을 사용해 사용자가 문자를 입력할때 마다 적합한 input인지 확인하기 위해 제어 컴포넌트로 만들고 굳이 입력할 때마다 유효성 검사가 필요없는 input에 관해서는 비제어 컴포넌트로도 만드려고 합니다.
+
+### 1. (Controlled Component)제어 컴포넌트란?
+   제어 컴포넌트는 React state를 사용해서 사용자 입력값을 제어하는 방식입니다. 사용자가 입력한 값과 State값이 실시간으로 동기화 됩니다. 흔히 useState를 사용해서 input에 연결하는 방식이죠
+
+```tsx
+import React, { useState } from "react";
+
+function ControlledComponentExample() {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  return (
+    <div>
+      <input type="text" value={inputValue} onChange={handleChange} />
+      <p>입력된 값: {inputValue}</p>
+    </div>
+  );
+}
+
+export default ControlledComponentExample;
+```
+
+따라서 실시간으로 유효성 검사나 특정한 입력 방식을 적용할때 유용합니다.
+
+하지만 단점이 존재합니다. Input값이 바뀔 때마다 리렌더링이 일어난다는 것입니다. 불필요한 리렌더링, api요청이 이루어질 수 있다는 것입니다. 이러한 단점을 해결하기위해 debounce , throttling 같은 방법들을 사용하기도 합니다.
+
+### 2. (Uncontrolled Component)비제어 컴포넌트
+   비제어 컴포넌트는 ref를 사용해서 DOM에서 직접 form 값을 가져오는 방법입니다. 비제어 컴포넌트는 사용자가 직접 submit하기 전까지는 리렌더링을 발생시키지 않고 값을 동기화 하지 않습니다.
+
+react를 쓰지 않고 자바스크립트만 사용했을때와 같다고 생각하면 될것 같아요
+
+```tsx
+import React, { useRef } from "react";
+
+function UncontrolledComponentExample() {
+  const inputRef = useRef(null);
+
+  const handleButtonClick = () => {
+    console.log("입력된 값:", inputRef.current.value);
+  };
+
+  return (
+    <div>
+      <input type="text" ref={inputRef} />
+      <button onClick={handleButtonClick}>입력값 출력</button>
+    </div>
+  );
+}
+
+export default UncontrolledComponentExample;
+```
+
+결론: 실시간으로 값이 필요하거나 유효성 검사가 필요하다면 제어 컴포넌트를 사용하고 제출 시에만 값이 필요할 때는 비제어 컴포넌트를 사용하는 것입니다.
+
+### 3. 요구사항
+   일단 개발 요구사항을 살펴보겠습니다.
+
+#### form 구조
+- image file input
+    - 이미지를 올리면 preview를 보여줘야 한다.
+    - 이미지 초기화 버튼을 누르면 이미지가 초기화 되어야 한다.
+- 제목 입력 input과 내용 입력 textarea
+    - 제목 입력값은 필수로 입력해야 한다.
+    - 입력값은 30자 이내이어야 하고 특수문자는 submit 될수 없다
+    - 입력할 때마다 이 값이 유효한지 확인해야 한다.
+    - 첫 페이지 렌더링시에는 값이 비어있더라도 경고 메시지가 띄워지면 안된다.
+- 색깔 radiobox
+    - radiobox는 한가지만 선택 할 수 있다.
+    - 무조건 한개는 선택되어 있기 때문에 유효성 검사가 필요 없다.
+
+미리보기 또는 유효성 검사가 있는 image와 제목 , 내용 입력 Input은 제어 컴포넌트로 구현하여야 하며
+
+색깔 radiobox는 비제어 컴포넌트로 구현해야 불필요한 렌더링을 없앨 수 있을 것 입니다.
+
+### 4. 구현
+   가독성과 유연함이 좋아 재사용성이 높다는 Compound 패턴의 장점을 가져가기 위해서
+
+일단 저는 Compound 패턴으로 컴포넌트를 구현 해볼 생각이고
+
+유효성 검사는 yup을 사용해보려고 합니다!
+
+- Form 컴포넌트
+
+```tsx
+const Form = ({
+  children,
+  onSubmit,
+  defaultValues,
+  schema,
+}: {
+  children: React.ReactNode;
+  onSubmit: (data: FieldValues) => void;
+  defaultValues: FieldValues;
+  schema: yup.ObjectSchema<FieldValues>;
+}) => {
+  const method = useForm<FieldValues>({
+    defaultValues: defaultValues,
+    resolver: yupResolver(schema),
+  });
+  const submit: SubmitHandler<FieldValues> = (data) => {
+    onSubmit(data);
+  };
+  return (
+    <FormProvider {...method}>
+      <form onSubmit={method.handleSubmit(submit)}>{children}</form>
+    </FormProvider>
+  );
+};
+
+Form.ColorRadioInputField = ColorRadioInputField;
+Form.ImageInputField = ImageInputField;
+Form.TitleInputField = TitleInputField;
+Form.ContentInputField = ContentInputField;
+
+export default Form;
+```
+
+react hook form 에서 제공하는 FormProvider를 통해서 useForm을 자식 컴포넌트에게 전해줍니다.
+
+이때 useForm은 양식을 쉽게 관리하게 만드는 hook으로 값 추적,submit , 유효성 검사 등 form 에 필요한 모든 상태를 useForm 으로 한번에 처리할 수 있게 만들어준다.
+
+useForm 에서는 register라는 등록 메소드를 많이 이용합니다.
+
+register 메소드는 input이나 select 엘리먼트를 등록하고 유효성 검사 규칙을 적용할 수 있게 만듭니다.
+
+하지만 이는 비제어 컴포넌트에서 많이 이용합니다. 물론 register 함수를 이용해서 제어컴포넌트를 만들 수 있지만 setState를 통해서 값을 수동으로 변경시켜줘야 합니다.
+
+```tsx
+register('firstName', { required: true, min: 8 });
+
+<TextInput onTextChange={(value) => setValue('lastChange', value))} />
+```
+
+따라서 제어 컴포넌트를 react hook form 에서 사용하려면 제공하는 Controller 컴포넌트를 사용하는 방법 혹은 useController hook을 사용해야 합니다.
+
+useController hook은 Controller 컴포넌트의 props와 메소드들을 공유하여 재사용 가능한 제어 컴포넌트를 만드는데 유용하고 좀 더 가독성있는 코드를 작성 할 수 있습니다.
+
+yup을 사용해 작성된 유효성 검사를 props로 받아오게 설계해 쉽게 유효성 조건을 변경 가능하게 만들었습니다.
+
+이 컴포넌트의 한가지 단점이 있다면 react hook form , yup 라이브러리에 너무 의존하고 있다는 것이 있겠네요
+
+### - Text input field (제어 컴포넌트)
+
+```tsx
+const TextInputField = ({
+  name,
+  validateText,
+  placeholder,
+}: {
+  name: FieldPath<FieldValues>;
+  validateText: string;
+  placeholder: string;
+}) => {
+  const { control, trigger } = useFormContext();
+  const { field: textField } = useController({
+    control,
+    name,
+  });
+  const { errors } = useFormState({ control, name });
+  const isValid = !errors[name];
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    textField.onChange({ target: { value: e.target.value } });
+    trigger(name);
+  };
+  return (
+    <>
+      <input
+        type="text"
+        onChange={handleOnChange}
+        css={titleTextInputStyle(false)}
+        placeholder={placeholder}
+      />
+      <InputNotice
+        isValid={isValid}
+        message={(errors[name]?.message as string) || validateText}
+      />
+    </>
+  );
+};
+
+export default TextInputField;
+```
+
+react hook form에서 제공하는 useFormContext를 사용해 useForm 을 불러옵니다.
+
+여기서 control는 form 을 컨트롤 할 수 있게 하는 메소드들이 담긴 객체로 useController를 통해 input에 접근합니다.
+
+trigger는 양식 또는 입력 유효성 검사를 수동 트리거 입니다. name 변수에 해당하는 input 수동으로 검사합니다.
+
+onChange 를 등록해주어 값을 제어해 줍니다.
+
+여기서 만약 input에 field만 주입해준다면 비제어 컴포넌트가 됩니다.
+
+```tsx
+// 비제어 컴포넌트
+const { field } = useController({ name: 'test' })
+
+<input {...field} />
+```
+
+error[name].message의 경우에는 다른 타입은 쓰지 않고 오로지 string으로 에러메시지를 작성할 것이기 때문에 as string으로 타입 처리를 해주었습니다.
+
+### - ImageField (제어 컴포넌트)
+
+```tsx
+const ImageInputField = ({ name }: { name: FieldPath<FieldValues> }) => {
+  const { control } = useFormContext();
+  const { field: imageField } = useController({
+    control,
+    name,
+  });
+  const { value } = imageField;
+
+  const imagePreview = useImagePreview(value);
+
+  const handleResetImage = () => {
+    imageField.onChange({ target: { value: null, name: "image" } });
+  };
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files;
+    if (file) {
+      imageField.onChange({ target: { value: file, name: "image" } });
+    }
+  };
+  return (
+    <Flex css={imageInputBoxStyle}>
+      <input
+        type="file"
+        multiple={false}
+        accept="image/*"
+        css={imageInputStyle}
+        id="image"
+        onChange={handleOnChange}
+      />
+      <label css={imageBoxStyle(!!imagePreview)} htmlFor="image">
+        {imagePreview && (
+          <img css={imageStyle} src={imagePreview} alt="team image" />
+        )}
+        {!imagePreview && <PhotoIcon style={{ width: "40px" }} />}
+      </label>
+      <Flex onClick={handleResetImage} css={resetImageButtonStyle}>
+        사진 초기화
+      </Flex>
+    </Flex>
+  );
+};
+export default ImageInputField;
+```
+
+textField랑 다른점이 있다면 preview 기능과 초기화 기능입니다.
+
+preview 기능을 위해서 field 를 사용해서 파일을 가져온 후 파일을 url로 변환하고 보여줍니다.
+
+url 변환 후에는 메모리 누수 방지를 위해 항상 revoke 하는 것을 잊으면 안됩니다
+
+### - ColorRadioInpuField (비제어 컴포넌트)
+
+```tsx
+const ColorRadioInputField = ({ name }: { name: FieldPath<FieldValues> }) => {
+  const { register } = useFormContext();
+
+  return (
+    <Flex css={ColorRadioInputFieldStyle}>
+      {TEAM_COLOR.map((color) => {
+        return (
+          <ColorRadioButton
+            key={color}
+            color={color}
+            register={register(name)}
+          />
+        );
+      })}
+    </Flex>
+  );
+};
+export default ColorRadioInputField;
+```
+
+비제어 컴포넌트를 구현하는것은 더 간단합니다. useForm의 register를 받아와 Button에 등록시켜주면 끝이 납니다.
+
+### - form 사용하기
+
+```tsx
+const schema = yup
+  .object({
+    title: TEAM_TITLE.RULES(),
+    content: TEAM_CONTENT.RULES(),
+  })
+  .required();
+
+const Main = () => {
+  const navigate = useNavigate();
+
+  const onSubmit = (data: FieldValues) => {
+    // ...
+  };
+  return (
+    <>
+      <Form
+        onSubmit={onSubmit}
+        defaultValues={TEAM_DEFAULT_VALUES}
+        schema={schema}
+      >
+        <Form.ImageInputField name="image" />
+        <Form.TitleInputField
+          placeholder={TEAM_TITLE.PLACEHOLDER}
+          name={TEAM_TITLE.NAME}
+          validateText={TEAM_TITLE.VALIDATE_TEXT()}
+        />
+        <Form.ContentInputField
+          placeholder={TEAM_CONTENT.PLACEHOLDER}
+          name={TEAM_CONTENT.NAME}
+          validateText={TEAM_CONTENT.VALIDATE_TEXT()}
+        />
+        <Form.ColorRadioInputField name="teamColor" />
+        <button css={submitButtonStyle} type="submit">
+          팀 생성하기
+        </button>
+      </Form>
+    </>
+  );
+};
+export default Main;
+```
+
+추가로 다른 form input이 필요하다면 언제든지 간단하게 추가 할 수 있습니다.
+
+react hook form 을 사용하지 않는다면 많은 ref와 state들을 사용해야 했을 텐데 한 곳에서 상태를 관리 한다는 것과 리렌더링 관리를 해주는 것이 정말 큰 장점인 것 같습니다.
