@@ -38,7 +38,7 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-  title: "Hellol's Blog",
+  title: "헬롤의 블로그",
   description: "헬롤의 블로그입니다. 여러 주제에 대해 다룹니다.",
   icons: {
     icon: "favicon.ico",
