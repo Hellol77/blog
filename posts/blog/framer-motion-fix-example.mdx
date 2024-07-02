@@ -1,0 +1,67 @@
+---
+title: "Framer motion의 예제 버그 수정해보기"
+date: 2024-01-03
+description: Framer motion의 예제 중 Variants 예제에서 sidebar가 닫혔는데도 요소가 클릭되는 문제를 해결해보자.
+thumbnailUrl: /posts/thumbnail/dog.jpeg
+tags: ["Framer motion", "React", "Variants", "sidebar", "사이드바"]
+---
+
+## 출발점
+
+framer motion을 쓰다보면 사라지는 애니메이션을 많이 사용하는 것 같다.
+
+참고로 이 글에서는 사라지는 애니메이션에 display : hidden을 사용할때만 한정한다.
+
+(state를 사용한다면 AnimatePresence를 주의하자)
+
+## 최근 마주한 버그
+
+사라지는 애니메이션은 정상적으로 동작하지만 애니메이션만 사라졌을 뿐 요소는 그대로 남아 content 부분을 간섭한다는 것이다.
+
+
+예를 들면 [framer motion의 예제 중 Variants 예제](https://www.framer.com/motion/examples/#variants)
+에서 Variants 예제 바로 아래에 버튼을 하나 만들면 그 버튼은 눌러지지 않는다.
+
+햄버거 메뉴가 사라졌지만 요소는 그대로 있어 버튼에 간섭하기 때문이다.
+
+누른다면 사이드바에 있는 요소가 눌릴 것이다.
+
+## 해결방법
+
+이를 해결하는 방법은 바로 `width` 를 조절하는 것이다.
+
+버튼을 간섭하는 요소는 바로 nav(부모요소)이기 때문에
+
+nav의 width를 auto로 만든다면 안에 있는 자식 요소에 따라서 width 가 변하기때문에 햄버거 메뉴가 클릭되지 않으면 nav때문에 버튼에 간섭이 오지 않게 된다.
+
+추가로 부모요소 안에 있는 태그가 버튼을 간섭하는 경우이다.
+
+이때는 width로 해결되지 않는다. 왜냐하면 태그안에 내용이 있으면 width가 고정 되기 때문이다.
+
+<p align="center">
+  <img src="/posts/framer-motion-fix-example/1.png" width="500" height="300" />
+</p>
+
+
+
+
+이때는 framer motion 안에서 해결해야한다.
+
+<p align="center">
+  <img src="/posts/framer-motion-fix-example/2.png" width="500" height="300" />
+</p>
+
+나는 MenuItem의 variants 에서 open 에서는 display:'block' 으로 화면에 보이게 하고 closed에서는 transitionEnd를 사용해 애니메이션을 좀 더 부드럽게 나오도록 했다.
+
+transitionEnd를 사용하지 않고 display:'none'만을 사용했을때는 애니메이션이 뚝뚝 끊기는 현상이 발생한다.
+
+transitionEnd 옵션은 애니메이션이 종료될 때 설정할 값을 지정하는 옵션이다.
+
+
+<p align="center">
+  <img src="/posts/framer-motion-fix-example/3.png" width="500" height="300" />
+</p>
+
+햄버거 메뉴를 클릭하지 않았을때도 ul 태그가 깔끔히 없어진것을 볼 수 있다.
+
+[수정완료된 예제](https://codesandbox.io/s/framer-motion-side-menu-forked-xgfymv)
