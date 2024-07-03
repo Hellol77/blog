@@ -1,3 +1,4 @@
+import ProgressBar from "@/app/blog/[slug]/components/ProgressBar";
 import TOC from "@/app/blog/[slug]/components/Toc";
 import Mdx from "@/app/blog/[slug]/components/mdx";
 import PageLayout from "@/components/PageLayout";
@@ -20,6 +21,7 @@ export default async function BlogPage({ params }: Props) {
   }
   return (
     <>
+      <ProgressBar />
       <PageLayout>
         <TOC content={blog.body.raw} />
         <div className="mt-5 flex flex-col gap-1">
