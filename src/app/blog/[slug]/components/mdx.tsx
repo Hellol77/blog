@@ -17,7 +17,7 @@ export default function Mdx({ code }: { code: string }) {
   const Component = useMDXComponent(code);
 
   return (
-    <div className="prose prose-slate dark:prose-invert flex-1">
+    <div className="prose prose-slate flex-1 dark:prose-invert">
       <Component components={mdxComponents} />
     </div>
   );

@@ -1,6 +1,8 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import rehypeCodeTitles from "rehype-code-titles";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import remarkParse from "remark-parse";
 
 export const Blog = defineDocumentType(() => ({
   name: "Blog",
@@ -26,6 +28,7 @@ export default makeSource({
   mdx: {
     rehypePlugins: [
       rehypeCodeTitles,
+      rehypeSlug,
       [
         // @ts-ignore
         rehypePrettyCode,

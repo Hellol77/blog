@@ -1,10 +1,10 @@
+import TOC from "@/app/blog/[slug]/components/Toc";
 import Mdx from "@/app/blog/[slug]/components/mdx";
 import PageLayout from "@/components/PageLayout";
 import { allBlogs } from "@/contentlayer/generated";
 import metadata from "@/utils/metadata";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import React from "react";
 
 interface Props {
   params: {
@@ -19,11 +19,14 @@ export default async function BlogPage({ params }: Props) {
     notFound();
   }
   return (
-    <PageLayout>
-      <div className="mt-5 flex flex-col gap-1">
-        <Mdx code={blog.body.code} />
-      </div>
-    </PageLayout>
+    <>
+      <PageLayout>
+        <TOC content={blog.body.raw} />
+        <div className="mt-5 flex flex-col gap-1">
+          <Mdx code={blog.body.code} />
+        </div>
+      </PageLayout>
+    </>
   );
 }
 
