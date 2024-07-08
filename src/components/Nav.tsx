@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Moon, Sun } from "lucide-react";
 import NAVIGATION from "@/constants/navigation";
 import MoblieNav from "@/components/MobileNav/MoblieNav";
+import { Margarine } from "@/styles/fonts/font";
 
 export default function Nav() {
   const { setTheme, theme } = useTheme();
@@ -19,7 +20,7 @@ export default function Nav() {
           {NAVIGATION.map((nav) => (
             <li key={nav.label}>
               <Link
-                className="duration-2000 font-light text-subText transition hover:text-textBasic"
+                className={`${Margarine.className}  duration-2000 text-subText transition hover:text-textBasic`}
                 href={nav.href}
               >
                 {nav.label}

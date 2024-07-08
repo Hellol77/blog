@@ -6,6 +6,7 @@ import MobileNavContent from "@/components/MobileNav/MobileNavContent";
 import NAVIGATION from "@/constants/navigation";
 import Link from "next/link";
 import { useState } from "react";
+import { Margarine } from "@/styles/fonts/font";
 
 export default function MoblieNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,7 +22,7 @@ export default function MoblieNav() {
             {NAVIGATION.map((nav) => (
               <Link
                 onClick={toggleMenuOpen}
-                className=" text-lg"
+                className={` text-lg ${Margarine.className}   duration-2000 text-subText transition hover:text-textBasic`}
                 key={nav.label}
                 href={nav.href}
               >

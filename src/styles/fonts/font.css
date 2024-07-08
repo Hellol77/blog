@@ -43,3 +43,8 @@
   font-weight: 900;
   src: url("./Pretendard-Black.woff2") format("woff2");
 }
+@font-face {
+  font-family: "Margarine";
+  font-weight: 400;
+  src: url("./Margarine-Regular.ttf") format("truetype");
+}

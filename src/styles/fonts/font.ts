@@ -49,3 +49,13 @@ export const Pretendard = localFont({
     },
   ],
 });
+
+export const Margarine = localFont({
+  src: [
+    {
+      path: "./Margarine-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+});
