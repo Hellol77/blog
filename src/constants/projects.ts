@@ -1,6 +1,7 @@
 import WaggleImage from "../../public/projects/waggle.png";
 import RotorageImage from "../../public/projects/rotorage.png";
 import TataroImage from "../../public/projects/tataro.png";
+import MainImage from "../../public/mainImage.jpg";
 import { ProjectType } from "@/types/projects";
 
 const PROJECTS: Partial<ProjectType>[] = [
@@ -23,6 +24,13 @@ const PROJECTS: Partial<ProjectType>[] = [
     description: "ChatGPT 기반 타로점 서비스",
     link: "https://tataro.net/",
     image: TataroImage,
+  },
+  {
+    title: "블로그",
+    description: "nextjs로 만든 개발 블로그",
+    link: "https://www.hellol.site/",
+    github: "https://github.com/Hellol77/blog",
+    image: MainImage,
   },
 ];
 

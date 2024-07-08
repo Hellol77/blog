@@ -32,7 +32,7 @@ export default function ProjectCard({
       <p className=" text-sm text-subText">{description}</p>
       <div className="mt-4 flex justify-center">
         <Image
-          className=" rounded-md"
+          className=" rounded-md object-cover w-32 h-32"
           alt="project"
           src={image!!}
           width={150}
