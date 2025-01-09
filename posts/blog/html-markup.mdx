@@ -1,0 +1,536 @@
+---
+title: "Html 정리하기"
+date: 2024-07-23
+description: html의 시멘틱 태그에서부터 이미지 마크업 최적화까지
+thumbnailUrl: /posts/thumbnail/dog.jpeg
+tags: ["html", "markup"]
+---
+
+프론트엔드의 기초라고 할 수 있는 html을 공부하며 정리해봤습니다.
+
+# 1. HTML content 정리하기
+
+- html: 골격과 의미를 전달하는 언어
+- [HTML 명세 사이트](https://html.spec.whatwg.org/multipage/indices.html#element-content-categories)
+- [브라우저 구현 현황](https://caniuse.com/)
+
+## Flow content (플로우 콘텐츠)
+
+- body에 포함할 수 있는 모든 요소.
+
+- 예전에 block 라고 부르던 요소들도 포함이 되지만, inline 이라고 부르던 요소들도 다 포함이 된다. 즉, 대부분의 요소들은 전부 Flow contents 이다.
+
+## Metadata content (메타데이터 콘텐츠)
+
+- 주로 문서의 head안에 들어가는 요소들.
+
+- 콘텐츠와 문서를 구조화 하는 요소를 의미. 다른 콘텐츠의 표시, 동작, 관계 등을 설정.
+
+- 경우에 따라서 일부 요소는 플로우 콘텐츠.예) script : body안에서도 사용할 수 있다.
+
+- 이 요소들은 실제로 화면에 출력하는 요소들은 아니기 때문에 css에서는 브라우저 display: none 방식으로 화면에 표시한다.
+
+## Heading content (헤딩 콘텐츠)
+
+- h1 ~ h6, hgroup
+
+- sectioning 콘텐츠의 헤더
+
+- sectioning 콘텐츠가 없어도 헤딩 콘텐츠가 있으면 암시적으로 섹션(==문서의 개요)이 형성된다.
+
+- display : block
+
+## Sectioning content (sectioning 콘텐츠)
+
+- article, aside, nav, section
+
+- 자주 빈번하게 사용된다.
+
+- 헤딩, 헤더, 풋터의 범위.
+
+- 각각 Sectioning 콘텐츠는 암시적인 개요를 형성하고, Sectioning 콘텐츠와 헤딩 콘텐츠를 함께 사용하면 명시적인 개요를 형성한다.
+
+- display : block
+
+## Phrasing content (프레이징 콘텐츠)
+
+- 구문 콘텐츠, 단락을 형성하는 콘텐츠.
+
+- 예전에 inline 요소라고 부르던 콘텐츠들이 대부분 프레이징 콘텐츠이다.
+
+- 이런 요소들이 보여서 하나의 단락을 형성하고 block을 형성하게 된다.
+
+- display : inline, inline-block, none
+
+- display : none인 프레이징 콘텐츠들 : link, meta, noscript, script, template
+
+## Embedded content (임베디드 콘텐츠)
+
+- 외부 자원을 참조하는 콘텐츠
+
+- 모든 임베디드 콘텐츠는 구문 콘텐츠이다.
+
+- display : inline, inline-block
+
+## Interactive content(인터렉티브 콘텐츠)
+
+- 사용자와 상호 작용할 수 있는 콘텐츠
+
+- a, button, iframe, img, input, label, select, textarea, video
+
+- 입력 장치(키보드, 마우스)로 조작할 수 있다.
+
+- display : inline, inline-block
+
+## Palpable content (팰퍼블 콘텐츠)
+
+- 비어 있지 않은, 볼 수 있는 콘텐츠
+
+- 화면에서 숨겨지 있지 않고, 클릭할 수 있거나 볼 수 있거나 드래그로 영역설정 등
+
+- hidden 속성이 없는.
+
+## Script-supporting element (스크립트 지원 요소)
+
+- 렌더링하지 않지만 사용자에게 기능을 제공
+
+- script, template
+
+## Transparent content models (투명 콘텐츠 모델)
+
+- 투명 콘텐츠 모델. 부모의 콘텐츠 모델을 따른다.
+
+- 문서노드에서 제거해도 문서가 유효하게 유지되어야 하는 요소
+
+- a, video, audio, canvas, ins, del, map...
+
+- 자식 요소로 무엇이든 담을 수 있지만, 부모 요소가 등장했을 때는 그 맥락을 따져봐야 한다.
+
+## HTML 명세의 구성
+
+- Context : 부모 요소의 콘텐츠 모데 유추 가능
+
+- Content model : 자식 요소의 카테고리
+
+# 2. 검색 엔진 밥상 차려주기
+
+- html의 궁극적인 목적은 사용자에게 올바른 의미를 전달하기 위해서이다.
+- 잘 만들어도 아무도 접속하지 않는다면 아무런 의미가 없다.
+- html을 잘 사용하면 검색엔진에 잘 노출될 수 있게 만들 수 있다.
+- 글로벌 검색엔진 시장 점유율 : Google 92.54%
+- 국내 검색엔진 시장 점유율 : Naver 63%(하락중), Google 30%(상승중)
+
+## SEO에 영향을 주는 요인들
+
+- page title, meta description, loading speed, UX
+
+### page title(페이지 타이틀)
+
+- Chrome lighthouse를 활용하여 검색엔진 최적화를 점수로 확인 가능
+
+- Chrome alexa extension을 활용하여 사이트의 랭크를 확인할 수 있다.
+
+- 타이틀 태그는 웹페이지 탭의 이름에 적용되어 사용자 경험에도 영향을 미친다.
+
+- 검색엔진 뿐만 아니라 접근성에도 영향을 미친다.
+
+- 페이지 타이틀 구분자 : - or | or : 추천.
+
+- 페이지타이틀을 javascript를 이용하여 동적으로 넣어도 괜찮다.
+
+### Metadata - html, head
+
+- lang :
+
+  - `<html lang="ko">` : 검색엔진이 특정 언어의 웹페이지를 검색할 때 도움을 주거나, 화면 낭독기 사용자들이 웹페이지를 읽을 때 어떤 음성 엔진을 선택해야 하는지 힌트를 주기도 한다.
+
+  - 구글은 lang 속성을 신뢰하지 않는다. 하지만 접근성 측면에서는 중요하다.
+
+- charset :
+
+  - `<meta charset="UTF-8">` : 한글 뿐만 아니라 전세계 모든 국가의 언어를 이 웹페이지에 문제없이 표시할 수 있다.
+
+  - utf-8이 표준이다.
+
+- name='description' content
+
+  - 사용 예 : `<meta name="description" content="A description of the page">`
+
+  - content : name에 대한 설명을 적는다.
+
+  - name="description" : content의 값을 검색엔진의 검색결과 화면에 노출된다. 검색 결과 화면에 사이트에 대한 설명을 표시해준다.
+
+- name='keywords' content
+
+  - 사용 예 : `<meta name="keywords" content="webtoon, adult, free, coupon, ...">`
+
+  - 구글 검색엔진은 이 값을 참고하지 않는다. 이유는 마켓터들이 이 keywords에 어뷰징을 하기 시작했기 때문.
+
+- name='viewport' content
+
+  - 사용 예 : `<meta name="viewport" content=width=device-width, initial-scale=1">`
+
+  - 모바일 디바이스에서 이 웹페이지가 모바일에서도 볼 수 있게 최적화 되어있는지를 검색엔진에 제공한다.
+
+<p align="center">
+  <img src="/posts/html-markup/1.png" height="300" />
+</p>
+
+큰 글씨는 페이지 타이틀, 작은 글씨는 name='description' 의 내용이다.
+
+### metadata - 구조화된 데이터
+
+- 네이버, 페이스북, X 등 다양한 플랫폼에서는 사용할 수 있는 구조화된 데이터를 제공한다.
+
+---
+
+# 3. html 개요 알고리즘 이해
+
+- 웹페이지의 헤딩이 잘 정리되어 있을 수록 검색엔진이 판단하기 쉬워지고, 화면 낭독기 사용자도 헤딩을 사용한다.
+
+## outline
+
+- 개요, 윤곽, 간결하게 추려 낸 주요 내용
+
+- 웹 문서의 개요는 헤딩과 섹션으로 형성
+
+- 웹 브라우저에서 문서의 헤딩이 얼마나 잘 구성되어 있는지 확인 하려면, Chrome의 HeadingsMap Extension을 활용하면 된다.
+
+### Title vs Heading
+
+- Title : 페이지의 제목, 브라우저 탭에 표시
+
+- Heading : 페이지의 구조, 제목, 섹션의 제목
+
+### Heading
+
+- 문서 개요를 형성하는 기본(==필수) 아이템.
+
+- 웹 브라우저와 화면낭독기에 문서 개요를 드러내는 방법.
+
+- 헤딩 없이 개요(문서 목차) 없다.
+
+### Sectioning Root
+
+- 명세에는 있지만, 브라우저 제조사는 이를 구현하지 않았다.
+
+- 실무에서 사용을 권장하지 않음.
+
+- `<body><blockquote><details><dialog><figure><fieldset><td>`
+
+- 독립적인 개요를 생성하는 개요 컨테이너.
+
+- 섹셔닝 루트 안쪽에 있는 헤딩은 개요로 취급하지 않음.
+
+### Sectioning Content
+
+- `<article>` : 기사, 본문, 맥락 독립적으로 배포 가능
+
+- `<aside>` : 페이지의 주요 내용이 아닌...배너, 연관콘텐츠
+
+- `<nav>` : 사이트의 주된 탐색 메뉴
+
+- `<section>` : 주제별로 나누거나 묶는
+
+- 개요의 범위를 명시적으로 지정하는 역할을 한다.
+
+- 헤딩을 자식 요소로 사용해야 한다.
+
+### 명시적 섹션 / 암시적 섹션
+
+- 명시적 섹션 : 헤딩과 함께 섹셔닝 콘텐츠를 사용하여 섹션의 범위를 명시적으로 알 수 있는 섹션.
+
+- 암시적 섹션 : 섹셔닝 콘텐츠를 사용하지 않고 헤딩만을 사용하여 암시적으로 개요가 생성된 섹션.
+
+### 어색한 섹션
+
+- 헤딩의 단계를 건너뛴 경우.
+
+- 섹셔닝 콘텐츠를 사용했지만 헤딩은 없는 경우.
+
+### 정리
+
+- 헤딩과 섹션을 1:1로 맵핑하여 사용하기
+
+- [참고](https://docs.google.com/presentation/d/1Z_L7Jm1bTd9MmiVHWnX90HwyyP9xaDQ1g0w4_yM5sQo/mobilepresent?slide=id.g207806c5f7_0_275)
+
+---
+
+# 4. html 의미론
+
+- html semantics
+
+## div,span
+
+- 아무런 의미도 없다.
+
+- 다른 적절한 html 요소를 사용할 수 없을 때 마지막으로 선택할 수 있는 태그이다.
+
+## Sectioning
+
+- article, aside, nav, section : 섹셔닝 요소
+
+- hx, hgroup, header, footer : 섹셔닝은 아니지만 함께 쓰는 요소
+
+## header, footer
+
+### header
+
+- 도입부, 헤딩, 헤딩 그룹, 목차, 검색, 로고
+
+### footer
+
+- 저자, 저작권, 연락처, 관련 문서
+
+### 사용
+
+- 섹셔닝 콘텐츠 범위 안.
+
+- 섹셔닝 루트(body) 안.
+
+- 한 페이지에서 한번만 사용하라는 법은 없다.
+
+## section, article
+
+- section : 제목이 있는 주제별 콘텐츠 그룹 또는 응용 프로그램 영역
+
+- article : 섹션 요소 중 독립적으로 배포 가능한 완결형 콘텐츠. 뉴스 기사, 블로그 본문, 사용자의 댓글
+
+- h1~h6 요소를 포함하면 매우 좋다.
+
+- header, footer 요소를 사용하는 것은 선택사항.
+
+## nav
+
+- ul 요소를 포함하면 좋다.
+
+- 주요 탐색 섹션. 목차.
+
+- 헤딩 요소를 강력하게 권장.
+
+## aside
+
+- 페이지의 주된 내용과 관련이 약해서 구분할 필요가 있는 섹션.
+
+- 부수적인 콘텐츠, 관련 기사, 광고 등.
+
+- 헤딩 요소를 포함하는 것을 강력하게 권장. 텍스트가 보일 필요가 없는 경우는 화면에서 보이지 않게 헤딩 처리.
+
+## main
+
+- 의외로 섹셔닝 콘텐츠가 아니다. (헤딩이 반드시 필요한 요소는 아니다.)
+
+- 문서의 핵심 주제 또는 애플리케이션의 핵심 기능과 직접 관련 있는 콘텐츠 영역을 의미.
+
+- 페이지마다 반복되지 않는 내용을 포함해야 한다. (gnb bar, footer, aside 등)
+
+- 한 페이지에 한 번만 표시할 수 있다.
+
+## dialog
+
+- 사용자와 상호 작용하는 응용프로그램을 의미한다.
+
+- modal dialog, alert dialog, window dialog 등
+
+## figure, figcaption
+
+- 독립적인 완결형 요소.
+
+- 이미지, 도쿄, 코드 등의 내용물과 설명을 포함한다.
+
+- figure, figcaption 서로 부모 자식 관계이다.
+
+- figcaption 은 figure안에서 단 한번만 사용할 수 있다.
+
+## mark
+
+- 독자의 주의를 끌기 위한 하이라이트.
+
+- 현재 독자의 행위나 관심에 따라 강조한 것.
+
+- 주로 검색 결과 목록에서 사용자가 입력한 키워드에 사용한다.
+
+## address
+
+- 직역하면 주소를 의미하지만, 연락처, 주소, 우편 정보를 나타내는 의미로 사용하기에는 적절하지 않다.
+
+- 연락처 정보 등을 나타내는 것이 아니라 저작권 정보, 저자의 연락처를 나타내기에 적절하다.
+
+- p 요소의 자손이 될 수 없다. address안에 p가 올 수는 있다.
+
+- 흔히 footer에 나타남.
+
+```html
+<footer>
+  <address>
+    <p>Written by hellol / 010-0000-0000</p>
+  </address>
+</footer>
+```
+
+## mark
+
+- 독자의 주의를 끌기 위한 하이라이트
+
+- 검색 결과 목록에서 사용자가 입력한 키워드
+
+## ins, del
+
+- ins는 추가한 내용을 의미.
+
+- del은 삭제한 내용을 의미.
+
+- 콘텐츠 모델이 투명해서 어떤 요소라도 포함할 수 있음. 하지만 여러 단락을 한꺼번에 포함하는 것은 부적절.
+
+- 흔히 쇼핑몰에서 정가를 취소선 처리하고 할인된 가격을 밑줄 처리할 때 사용한다.
+
+### 참고
+
+- 모델이 투명하다는 것은 자식요소로 무엇이든 담을 수 있다는 것을 의미한다.
+
+## progress
+
+- 계산 또는 사용자 과업의 진척도를 의미한다.
+
+- css를 이용해서 디자인을 바꿀 수 있다.
+
+- 낡은 브라우저를 위해서 progress 요소 텍스트 노드에 value 값을 넣는 것이 좋다.
+
+## b, i, s, u
+
+- b, i, s, u 대신에 strong, em, del, ins 를 먼저 고려해 보는 것이 좋다.
+
+# 상호작용 콘텐츠의 올바른 용법
+
+## interactive content (인터렉티브 콘텐츠)
+
+- 입력 장치(키보드, 마우스)로 조작할 수 있다.
+
+## a vs button
+
+- 같은 외형을 지닌 경우라도 a, button 요소를 구별해서 사용.
+- 실행 결과를 가리킬 수 있는 URL이 있으면 a 요소.
+- 참조할 URL이 없으면 button 요소를 사용.
+- 커서 모양이 다름에 유의.
+
+- a 사용 예 : 페이지 전체를 갱신하거나 URL 구조가 바뀜.
+
+  - 현재 페이지의 특정 섹션으로 이동할 때. 해당 섹션으로 스크롤.
+
+  - 링크를 눌러서 대화상자가 나올 때. `<a href="#modal"> <dialog id="modal">`
+
+  - 상태 표시줄에 url을 보여줌.
+
+  - 새 탭,새 창 또는 시크릿 창에서 링크 열기 기능을 사용할 수 있다.
+
+- button 사용 예 : 내용이 갱신이 되는 경우, URL이 변경되지 않는 경우.
+
+- 손 모양 커서는 링크를 의미한다.
+
+## a target
+
+- a태그에 target="\_blank" 를 사용하면 새 창에서 페이지를 열게 되지만, 탭 가로채기 공격에 노출된다.
+
+- 해결 방법 : 속성을 하나 더 추가한다. rel="noopener noreferrer"
+
+- 최신 브라우저는 target="\_blank" 링크에 암시적으로 rel 속성을 적용해주지만, 직접 명시해 주는 것이 좋다.
+
+## details summary
+
+- 열림 상태일 때 정보를 표시하는 위젯
+
+- 부모 자식 관계이다. details 안에 summary가 들어간다.
+
+- summary에는 숨겨진 부분에 대한 요약을 넣는다.(보이는 부분)
+
+- details 요소에 open 속성을 넣으면 열린 상태로 표시한다.
+
+- 예전에는 javascript로 전부 작성했지만, 이 태그를 사용하면 좀 더 쉽게 작성이 가능하다.
+
+## input type
+
+- search : x버튼을 제공한다. 하지만 브라우저마다 x버튼이 다른 점이 단점이다.
+
+- tel : 모바일에서는 키패드가 나온다.
+
+- url : 모바일에서는 url을 입력하기 쉬운 키패드가 나온다.
+
+- email : 이전에 작성했던 이메일을 보여주는 편의를 제공해주기도 한다.
+
+- datetime-local : 날짜와 시간 입력 그 외
+
+## input 속성
+
+- datalist : input에 데이터를 넣을 때 미리 정의된 옵션 세트를 제공한다.
+
+---
+
+# 이미지 마크업 최적화
+
+- picture 기능을 잘 활용하면 우리들의 서버비용을 절약할 수 있고, 사용자 경험을 아주 작은 기법만으로도 크게 향상시킬수가 있다.
+
+- 대용량 이미지를 가볍게 만든다.
+
+- jpg/png : 과거의 유산
+
+- webp : jpg/png 대비 30~70% 용량
+
+- avif : 저용량+고품질
+
+- 여러가지 포맷을 준비한 다음에 사용자 환경에 알맞는 이미지 포멧을 내려준다.
+
+- avif 포맷을 권장한다.
+
+```html
+<picture>
+  <source srcset="x.avif" type="image/avif" />
+  <source srcset="x.webp" type="image/webp" />
+  <img src="x.jpg" alt />
+</picture>
+```
+
+- 사용자 환경을 탐지하는 역할을 picture 요소가 제공한다.
+
+- type 뿐만 아니라 media 속성도 가능하다
+
+```html
+<!-- 해상도 분기 -->
+<picture>
+  <source srcset="small.webp" media="(max-width:960px)" />
+  <img src="large.webp" alt />
+</picture>
+
+<!-- 해상력 분기 -->
+<picture>
+  <source srcset="2x.webp 2x, 1x.webp" type="image/webp" />
+  <img srcset="2x.jpg 2x" src="1x.jpg" alt />
+</picture>
+```
+
+## img 요소의 성능
+
+- loading="lazy" 로딩 지연
+
+- decoding="async" 디코딩 지연 : 이미지 디코딩을 병렬로 처리해서 이미지외에 다른 콘텐츠가 웹페이지에 빠르게 표시되게 도와준다.
+
+## debugging 팁
+
+- picture와 source는 화면에 출력되는 요소가 아니다.
+
+- currentSrc : 현재 화면에 출력하고 있는 소스.
+
+- intrinsic : 현재 화면에 출력하는 소스의 원본 사이즈.
+
+<p align="center">
+  <img src="/posts/html-markup/2.png" height="300" />
+</p>
+
+## 정리
+
+- avif 포맷을 제공하고 webp, jpg를 대체 수단으로 제공한다.
+
+- picture, source, img 요소와 srcset, type, media 속성의 문법을 익히자.
+
+- 빠른 로딩 속도를 통해 UX를 개선하고 이미지 전송 비용을 절약하자.
+
+---
