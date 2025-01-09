@@ -1,4 +1,3 @@
-import Page from "@/app/guestbook/page";
 import PageLayout from "@/components/PageLayout";
 import React from "react";
 

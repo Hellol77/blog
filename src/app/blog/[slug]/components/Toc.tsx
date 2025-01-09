@@ -52,12 +52,12 @@ export default function TOC({ content }: { content: string }) {
   };
 
   return (
-    <div className=" fixed -right-4 top-20 mr-8 hidden border-l-2 pl-8 xl:flex xl:flex-col xl:gap-1">
-      <div className="">목차</div>
+    <div className=" fixed -right-4 top-20 mr-8 hidden h-[80%] overflow-scroll border-l-2 pl-8 xl:flex xl:flex-col xl:gap-1 [&::-webkit-scrollbar]:hidden">
+      <div className=" text-2xl font-semibold">목차</div>
       {HeadingArr?.map((heading, index) => (
         <div
           key={index}
-          className={`${getIndentMargin(heading.indent)}  font-medium w-56`}
+          className={`${getIndentMargin(heading.indent)}  w-56 font-medium`}
         >
           <a href={"#" + heading.link}>{heading.text}</a>
         </div>
